@@ -3,6 +3,8 @@ from app.models.user import User, Role
 
 from typing import List
 
+from app.schemas.user import UserCreate
+
 
 class UserCrud(object):
     @staticmethod
@@ -18,6 +20,19 @@ class UserCrud(object):
     @staticmethod
     def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]|None:
         return db.query(User).offset(skip).limit(limit).all()
+
+
+    @staticmethod
+    def create_user(db: Session, user: UserCreate):
+        # TODO: Implement password hashing (SHA256)
+        fake_hashed_password = user.password + "notreallyhashed"
+        db_user = User(email=user.email, hashed_password=fake_hashed_password)
+
+        db.add(db_user)
+        db.commit()
+        db.refresh(db_user)
+
+        return db_user
 
 
 class RoleCrud(object):
