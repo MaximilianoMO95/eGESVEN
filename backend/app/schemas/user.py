@@ -1,6 +1,23 @@
+from typing import Optional
 from pydantic import BaseModel
 
+# User Role Table
+class RoleBase(BaseModel):
+    name: str
 
+
+class RoleCreate(RoleBase):
+    pass
+
+
+class Role(RoleBase):
+    id: int
+
+    class Config:
+        from_attributes = True
+
+
+# User Table
 class UserBase(BaseModel):
     email: str
 
@@ -12,6 +29,26 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
+    role: Role
+
+    class Config:
+        from_attributes = True
+
+
+# Person Table
+class PersonBase(BaseModel):
+    first_name: str
+    last_name: str
+    address: str
+    phone_number: Optional[str] = None
+
+
+class PersonCreate(PersonBase):
+    pass
+
+
+class Person(PersonBase):
+    user: User
 
     class Config:
         from_attributes = True
