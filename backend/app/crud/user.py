@@ -18,7 +18,7 @@ class UserCrud(object):
 
 
     @staticmethod
-    def get_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]|None:
+    def get_users(db: Session, skip: int = 0, limit: int = 10) -> List[User]|None:
         return db.query(User).offset(skip).limit(limit).all()
 
 
