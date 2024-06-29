@@ -1,25 +1,14 @@
-from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from app.core.db import SessionLocal, engine
-from app import schemas, crud, models
+from fastapi import FastAPI
 
-models.Base.metadata.create_all(bind=engine)
+from app.core.db import engine
+from app.endpoints import user
+from app import models
+
 
 app = FastAPI()
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try: yield db
-    finally: db.close()
+app.include_router(user.router, prefix="/api/v1", tags=["user"])
 
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/users/", response_model=list[schemas.user.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.user.get_users(db, skip=skip, limit=limit)
-    return users
+# Create database tables
+models.Base.metadata.create_all(bind=engine)
