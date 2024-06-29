@@ -1,3 +1,4 @@
-from . import user
+from .user import UserCrud as user
+from .user import RoleCrud as role
 
-__all__ = ["user"]
+__all__ = ["user", "role"]
