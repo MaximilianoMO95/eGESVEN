@@ -19,7 +19,7 @@ class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True)
-    codigo = Column(String(30), unique=True, index=True, nullable=False)
+    code = Column(String(30), unique=True, index=True, nullable=False)
     description = Column(String(600), nullable=False)
     price = Column(Integer, nullable=False)
     stock = Column(SmallInteger, nullable=False)
