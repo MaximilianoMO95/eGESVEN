@@ -23,7 +23,7 @@ class UserCrud(object):
 
 
     @staticmethod
-    def create_user(db: Session, user: UserCreate):
+    def create_user(db: Session, user: UserCreate) -> User:
         # TODO: Implement password hashing (SHA256)
         fake_hashed_password = user.password + "notreallyhashed"
         db_user = User(email=user.email, hashed_password=fake_hashed_password)
