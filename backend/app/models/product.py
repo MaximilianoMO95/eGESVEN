@@ -1,4 +1,4 @@
-from sqlalchemy.types import Integer, SmallInteger, String
+from sqlalchemy.types import Integer, String
 from sqlalchemy.schema import CheckConstraint, Column, ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -22,7 +22,7 @@ class Product(Base):
     code = Column(String(30), unique=True, index=True, nullable=False)
     description = Column(String(600), nullable=False)
     price = Column(Integer, nullable=False)
-    stock = Column(SmallInteger, nullable=False)
+    stock = Column(Integer, nullable=False)
     category_code = Column(String(10), ForeignKey("categories.code"), nullable=False)
 
     # Relationships
