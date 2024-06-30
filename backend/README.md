@@ -1,1 +1,63 @@
 # eGESVEN Service
+This FastAPI project is a APIREST designed for an e-commerce
+application. Currently, it handles users and products, with plans to
+add roles, delivery, orders, payments, and a shopping cart.
+
+<br>
+
+## Features
+- [x] Manage user registration and authentication. (partial)
+- [x] CRUD operations for products. (partial)
+
+<br>
+<br>
+
+## Planned
+- [ ] Roles: Admin, administrative, and client roles for permission management.
+- [ ] Delivery: Manage delivery information and status.
+- [ ] Orders: CRUD operations for orders and order tracking.
+- [ ] Payments: Payment processing and tracking.
+- [ ] Shopping Cart: Handle shopping cart functionality for users. [x] 
+
+<br>
+<br>
+
+## Installation
+
+### Prerequisites
+- Python 3.8+
+- MySQL
+- FastAPI
+- PyTest
+- PyMySQL
+
+### Steps
+1. Clone the repository:
+```
+git clone https://github.com/MaximilianoMO95/eGESVEN.git
+cd eGESVEN/backend
+```
+
+2. Create and activate a virtual environment:
+```
+python -m venv .venv
+source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
+```
+
+3. Install dependencies (optional):
+```
+pip install -r requirements.txt
+```
+
+4. Set up the environment variables:
+    - First create a `.env` file
+    - After created the file copy the content of `.env-example` file into `.env`
+    - Finally update the values of the variables as needed
+
+5. Run the server:
+```
+fastapi dev app/main.py
+```
+
+<br>
+<br>
