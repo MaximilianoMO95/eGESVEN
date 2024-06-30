@@ -23,7 +23,7 @@ class Product(Base):
     description = Column(String(600), nullable=False)
     price = Column(Integer, nullable=False)
     stock = Column(Integer, nullable=False)
-    category_code = Column(String(10), ForeignKey("categories.code"), nullable=False)
+    category_code = Column(String(30), ForeignKey("categories.code"), nullable=False)
 
     # Relationships
     category = relationship("Category", back_populates="products")
