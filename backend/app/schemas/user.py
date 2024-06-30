@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from pydantic.config import ConfigDict
 
 # User Role Table
 class RoleBase(BaseModel):
@@ -13,8 +14,7 @@ class RoleCreate(RoleBase):
 class Role(RoleBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # User Table
@@ -31,8 +31,7 @@ class User(UserBase):
     is_active: bool
     role: Role
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Person Table
@@ -50,5 +49,4 @@ class PersonCreate(PersonBase):
 class Person(PersonBase):
     user: User
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

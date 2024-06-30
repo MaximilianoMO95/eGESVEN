@@ -1,6 +1,8 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
+from pydantic.config import ConfigDict
+
 # Category Table
 class CategoryBase(BaseModel):
     code: str
@@ -14,8 +16,7 @@ class CategoryCreate(CategoryBase):
 class Category(CategoryBase):
     products: List["Product"] = []
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 # Product Table
@@ -34,5 +35,4 @@ class ProductCreate(ProductBase):
 class Product(ProductBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
