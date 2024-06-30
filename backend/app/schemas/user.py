@@ -2,6 +2,26 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic.config import ConfigDict
 
+# User Permissions
+class PermissionBase(BaseModel):
+    name: str
+    description: str | None = None
+
+
+class PermissionCreate(PermissionBase):
+    pass
+
+
+class PermissionUpdate(PermissionBase):
+    pass
+
+
+class Permission(PermissionBase):
+    id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 # User Role Table
 class RoleBase(BaseModel):
     name: str

@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Session
-from app.models.user import User, Role
+from app.models.user import User, Role, Permission
 
-from typing import List
+from typing import List, Set
 
-from app.schemas.user import UserCreate
+from app.schemas.user import PermissionCreate, RoleCreate, UserCreate
 
 
 class UserCrud(object):
+
     @staticmethod
     def get_user(db: Session, user_id: int) -> User|None:
         return db.query(User).filter(User.id == user_id).first()
@@ -26,7 +27,12 @@ class UserCrud(object):
     def create_user(db: Session, user: UserCreate) -> User:
         # TODO: Implement password hashing (SHA256)
         fake_hashed_password = user.password + "notreallyhashed"
-        db_user = User(email=user.email, hashed_password=fake_hashed_password)
+
+        role = RoleCrud.get_role_by_name(db, "client");
+        if not role:
+            role = RoleCrud.create_role(db, RoleCreate(name="client"));
+
+        db_user = User(email=user.email, hashed_password=fake_hashed_password, role_id=role.id)
 
         db.add(db_user)
         db.commit()
@@ -35,10 +41,34 @@ class UserCrud(object):
         return db_user
 
 
-class RoleCrud(object):
     @staticmethod
-    def create_role(db: Session, role_name: str) -> Role:
-        db_role = Role(name=role_name)
+    def get_user_permissions(db: Session, user_id: int) -> Set[Permission]|None:
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            return None
+
+
+        permissions = set()
+        for role in user.role:
+            for perm in role.permissions:
+                permissions.add(perm.name)
+        return permissions
+
+
+    @staticmethod
+    def have_permission(db: Session, user_id: int, permission: str) -> bool:
+        permissions = UserCrud.get_user_permissions(db, user_id)
+        if not permissions or permission not in permissions:
+            return False
+
+        return True
+
+
+class RoleCrud(object):
+
+    @staticmethod
+    def create_role(db: Session, role: RoleCreate) -> Role:
+        db_role = Role(name=role.name)
 
         db.add(db_role)
         db.commit()
@@ -50,6 +80,11 @@ class RoleCrud(object):
     @staticmethod
     def get_role(db: Session, role_id: int) -> Role|None:
         return db.query(Role).filter(Role.id == role_id).first()
+
+
+    @staticmethod
+    def get_role_by_name(db: Session, name: str) -> Role|None:
+        return db.query(Role).filter(Role.name == name).first()
 
 
     @staticmethod
@@ -75,3 +110,14 @@ class RoleCrud(object):
             db.commit()
 
             return db_role
+
+
+class PermissionCrud:
+
+    @staticmethod
+    def create_permission(db: Session, permission: PermissionCreate):
+        db_permission = Permission(name=permission.name, description=permission.description)
+        db.add(db_permission)
+        db.commit()
+        db.refresh(db_permission)
+        return db_permission
