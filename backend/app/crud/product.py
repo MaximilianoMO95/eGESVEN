@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app.models.product import Category, Product
 from app.schemas.product import CategoryCreate, ProductCreate
 
+
 class CategoryCrud:
     @staticmethod
     def get_category(db: Session, code: str) -> Category|None:
@@ -69,7 +70,7 @@ class ProductCrud:
     @staticmethod
     def create_product(db: Session, product: ProductCreate):
         db_product = Product(
-            codigo=product.code,
+            code=product.code,
             description=product.description,
             price=product.price,
             stock=product.stock,
