@@ -9,10 +9,10 @@ from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 
 from app.endpoints.deps import get_db
-from app.core.db import engine, Base
+from app.core.db import engine, Base, init_db
 from app.main import app
 from app.models.product import Category, Product
-from app.models.user import Role, User
+from app.models.user import Permission, Role, User
 
 
 load_dotenv()
@@ -34,7 +34,9 @@ def overwrite_get_db():
 
 app.dependency_overrides[get_db] = overwrite_get_db
 
+
  # Create the database tables
+Base.metadata.drop_all(bind=engine)
 Base.metadata.create_all(bind=engine)
 
 
@@ -48,12 +50,7 @@ def client() -> Generator[TestClient, Any, None]:
 @pytest.fixture(scope="session", autouse=True)
 def db() -> Generator[Session, Any, None]:
     with TestingSessionLocal() as session:
+        init_db(session)
+
         yield session
-
-        session.execute(delete(Role))
-        session.execute(delete(User))
-        session.execute(delete(Product))
-        session.execute(delete(Category))
-        session.commit()
-
         session.close()
