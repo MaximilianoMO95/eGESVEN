@@ -12,7 +12,7 @@
   margin-top: 100px;
   border: 2px solid black;
   padding: 10px;
-  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.493);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   border-radius: 10px;
   text-align: center;
@@ -45,15 +45,17 @@
 
 .cardsBtn {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: hsla(0, 0%, 100%, 0.8);
+  color: #000000;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 .cardsBtn:hover {
-  background-color: #0056b3;
+  background-color: #ffffff;
 }
 
