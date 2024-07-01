@@ -19,6 +19,7 @@ def test_create_product(client: TestClient) -> None:
     product_data = {
         "code": "PROD001",
         "description": "Test Product",
+        "name": "chicha de manzana",
         "price": 100,
         "stock": 10,
         "category_code": "CAT001"
@@ -50,6 +51,7 @@ def test_read_product(client: TestClient, db: Session) -> None:
     data = response.json()
     assert data["id"] == product.id
     assert data["code"] == product.code
+    assert data["name"] == product.name
     assert data["description"] == product.description
     assert data["price"] == product.price
     assert data["stock"] == product.stock
