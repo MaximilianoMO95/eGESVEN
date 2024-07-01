@@ -122,3 +122,47 @@ class PermissionCrud:
         db.commit()
         db.refresh(db_permission)
         return db_permission
+
+
+class RolePermissionCrud:
+
+    @staticmethod
+    def add_permission_to_role(db: Session, role_id: int, permission: PermissionCreate) -> Role:
+        role = db.query(Role).filter(Role.id == role_id).first()
+        if not role:
+            raise ValueError("Role not found")
+
+        # Check if the permission already exists
+        existing_permission = db.query(Permission).filter(Permission.name == permission.name).first()
+        if not existing_permission:
+            existing_permission = Permission(name=permission.name, description=permission.description)
+            db.add(existing_permission)
+            db.commit()
+            db.refresh(existing_permission)
+
+        # Add permission to role if not already present
+        if existing_permission not in role.permissions:
+            role.permissions.append(existing_permission)
+            db.commit()
+            db.refresh(role)
+
+        return role
+
+
+    @staticmethod
+    def remove_permission_from_role(db: Session, role_id: int, permission_name: str) -> Role:
+        role = db.query(Role).filter(Role.id == role_id).first()
+        if not role:
+            raise ValueError("Role not found")
+
+        # Find the permission to remove
+        permission = db.query(Permission).filter(Permission.name == permission_name).first()
+        if not permission:
+            raise ValueError("Permission not found")
+
+        if permission in role.permissions:
+            role.permissions.remove(permission)
+            db.commit()
+            db.refresh(role)
+
+        return role
