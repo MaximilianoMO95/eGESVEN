@@ -20,7 +20,7 @@ class Product(Base):
 
     id = Column(Integer, primary_key=True)
     code = Column(String(30), unique=True, index=True, nullable=False)
-    name = Column(String(30), nullable=False)
+    name = Column(String(80), nullable=False)
     description = Column(String(600), nullable=False)
     price = Column(Integer, nullable=False)
     stock = Column(Integer, nullable=False)
