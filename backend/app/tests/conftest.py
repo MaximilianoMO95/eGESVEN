@@ -2,7 +2,7 @@ import os
 import pytest
 
 from typing import Any, Generator
-from sqlalchemy import create_engine, delete
+from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from dotenv import load_dotenv
 
@@ -11,8 +11,6 @@ from fastapi.testclient import TestClient
 from app.endpoints.deps import get_db
 from app.core.db import engine, Base, init_db
 from app.main import app
-from app.models.product import Category, Product
-from app.models.user import Permission, Role, User
 
 
 load_dotenv()
