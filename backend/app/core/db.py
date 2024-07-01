@@ -19,8 +19,8 @@ Base = declarative_base()
 
 def init_db(db: Session) -> None:
     from app.schemas.user import PermissionCreate, RoleCreate
-    from app.crud import user_permission
-    from app.crud import user_role
+    from app.crud.user import PermissionCrud as user_permission
+    from app.crud.user import RoleCrud as user_role
 
     # Create default permissions
     client_permission = PermissionCreate(

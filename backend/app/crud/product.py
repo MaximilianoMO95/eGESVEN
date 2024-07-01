@@ -6,6 +6,7 @@ from app.schemas.product import CategoryCreate, ProductCreate
 
 
 class CategoryCrud:
+
     @staticmethod
     def get_category(db: Session, code: str) -> Category|None:
         return db.query(Category).filter(Category.code == code).first()
@@ -52,6 +53,7 @@ class CategoryCrud:
 
 
 class ProductCrud:
+
     @staticmethod
     def get_product(db: Session, product_id: int) -> Product|None:
         return db.query(Product).filter(Product.id == product_id).first()
