@@ -49,10 +49,14 @@ class UserCrud:
             return None
 
 
+        role = RoleCrud.get_role(db, cast(int, user.role_id))
+        if not role:
+            return None
+
         permissions = set()
-        for role in user.role:
-            for perm in role.permissions:
-                permissions.add(perm.name)
+        for perm in role.permissions:
+            permissions.add(perm.name)
+
         return permissions
 
 
