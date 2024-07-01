@@ -1,4 +1,5 @@
 from typing import Optional
+from sqlalchemy import delete
 from sqlalchemy.orm import Session
 
 from app.models.user import Role, User
@@ -20,3 +21,8 @@ def create_random_user(db: Session, role_id: Optional[int] = None) -> User:
 
     user = UserCreate(email=email, password=hashed_password)
     return crud_user.create_user(db, user)
+
+
+def empty_user_records(db: Session) -> None:
+    db.execute(delete(User))
+    db.commit()
