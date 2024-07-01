@@ -15,11 +15,12 @@ def create_random_product(db: Session, category_code: Optional[str] = None) -> P
 
 
     code = helpers.random_code()
+    name = helpers.random_lower_str(len=30)
     description = helpers.random_lower_str(len=200)
     price = helpers.random_int(min=1, max=500000)
     stock = helpers.random_int(min=0, max=100)
 
-    product = ProductCreate(code=code, description=description, price=price, stock=stock, category_code=category_code)
+    product = ProductCreate(code=code, name=name, description=description, price=price, stock=stock, category_code=category_code)
     return crud_product.create_product(db, product)
 
 
