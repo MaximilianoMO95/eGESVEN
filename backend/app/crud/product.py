@@ -73,6 +73,7 @@ class ProductCrud:
     def create_product(db: Session, product: ProductCreate):
         db_product = Product(
             code=product.code,
+            name=product.name,
             description=product.description,
             price=product.price,
             stock=product.stock,
