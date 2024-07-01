@@ -1,12 +1,13 @@
+from sqlalchemy import Column
 from sqlalchemy.orm import Session
 from app.models.user import User, Role, Permission
 
-from typing import List, Set
+from typing import List, Set, cast
 
 from app.schemas.user import PermissionCreate, RoleCreate, UserCreate
 
 
-class UserCrud(object):
+class UserCrud:
 
     @staticmethod
     def get_user(db: Session, user_id: int) -> User|None:
@@ -64,7 +65,7 @@ class UserCrud(object):
         return True
 
 
-class RoleCrud(object):
+class RoleCrud:
 
     @staticmethod
     def create_role(db: Session, role: RoleCreate) -> Role:
@@ -96,7 +97,7 @@ class RoleCrud(object):
     def update_role(db: Session, role_id: int, new_name: str) -> Role|None:
         db_role = db.query(Role).filter(Role.id == role_id).first()
         if db_role:
-            db_role.name = new_name
+            db_role.name = cast(Column[str], new_name)
             db.commit()
             db.refresh(db_role)
             return db_role
