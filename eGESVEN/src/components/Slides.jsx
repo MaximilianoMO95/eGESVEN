@@ -1,9 +1,13 @@
 import React from "react";
 import Slider from "react-slick";
-import calafateImage from '../assets/calafate.jpg';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SlidesCSS from './Slides.module.css';
+import calafateImage from '../assets/calafate.jpg';
+import jackImage from '../assets/jack-daniels.jpg'
+import johnieImage from '../assets/Jw.jpg'
+import kunstImage from '../assets/Kunst.jpg'
+import vodkaImage from '../assets/Vodka.jpg'
 
 function Arrow(props) {
   const { className, style, onClick } = props;
@@ -53,40 +57,40 @@ function Slides() {
         <div className={SlidesCSS.cards}>
           <img src={calafateImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
           <div className={SlidesCSS.cardsBody}>
-            <h3 className={SlidesCSS.cardsTitle}>Título del Producto</h3>
-            <p className={SlidesCSS.cardsPrice}>$XX.XX</p>
+            <h3 className={SlidesCSS.cardsTitle}>Cerveza Austral</h3>
+            <p className={SlidesCSS.cardsPrice}>$7.000</p>
             <button className={SlidesCSS.cardsBtn}>Comprar</button>
           </div>
         </div>
         <div className={SlidesCSS.cards}>
-          <img src={calafateImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
+          <img src={jackImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
           <div className={SlidesCSS.cardsBody}>
-            <h3 className={SlidesCSS.cardsTitle}>Título del Producto</h3>
-            <p className={SlidesCSS.cardsPrice}>$XX.XX</p>
+            <h3 className={SlidesCSS.cardsTitle}>Jack Daniel's</h3>
+            <p className={SlidesCSS.cardsPrice}>$21.000</p>
             <button className={SlidesCSS.cardsBtn}>Comprar</button>
           </div>
         </div>
         <div className={SlidesCSS.cards}>
-          <img src={calafateImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
+          <img src={johnieImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
           <div className={SlidesCSS.cardsBody}>
-            <h3 className={SlidesCSS.cardsTitle}>Título del Producto</h3>
-            <p className={SlidesCSS.cardsPrice}>$XX.XX</p>
+            <h3 className={SlidesCSS.cardsTitle}>JW Gold</h3>
+            <p className={SlidesCSS.cardsPrice}>$40.000</p>
             <button className={SlidesCSS.cardsBtn}>Comprar</button>
           </div>
         </div>
         <div className={SlidesCSS.cards}>
-          <img src={calafateImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
+          <img src={kunstImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
           <div className={SlidesCSS.cardsBody}>
-            <h3 className={SlidesCSS.cardsTitle}>Título del Producto</h3>
-            <p className={SlidesCSS.cardsPrice}>$XX.XX</p>
+            <h3 className={SlidesCSS.cardsTitle}>Kunstmann</h3>
+            <p className={SlidesCSS.cardsPrice}>$6.900</p>
             <button className={SlidesCSS.cardsBtn}>Comprar</button>
           </div>
         </div>
         <div className={SlidesCSS.cards}>
-          <img src={calafateImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
+          <img src={vodkaImage} alt="Imagen Cerveza Austral Calafate" className={SlidesCSS.cardsImg} />
           <div className={SlidesCSS.cardsBody}>
-            <h3 className={SlidesCSS.cardsTitle}>Título del Producto</h3>
-            <p className={SlidesCSS.cardsPrice}>$XX.XX</p>
+            <h3 className={SlidesCSS.cardsTitle}>Eristoff</h3>
+            <p className={SlidesCSS.cardsPrice}>$5.000</p>
             <button className={SlidesCSS.cardsBtn}>Comprar</button>
           </div>
         </div>
