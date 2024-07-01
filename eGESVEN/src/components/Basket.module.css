@@ -1,12 +1,16 @@
 .container {
   padding: 1.3em;
-  background-color: #FFF;
+  background-color: hsla(0, 0%, 0%, 0.7);
   border-radius: 0.3em;
+  color: hsla(0, 0%, 100%, 0.9);
+  width: 100%;
 }
 
 .title {
   font-size: 24px;
   margin-bottom: 20px;
+  text-align: center;
+  
 }
 
 .empty {
@@ -43,13 +47,14 @@
 
 .itemPrice {
   font-size: 18px;
-  color: green;
+  color: hsla(0, 0%, 100%, 0.9);
 }
 
 .itemBtn {
-  background-color: red;
+  background-color: rgba(228, 17, 17, 0.781);
   color: white;
   border: none;
   padding: 10px;
   cursor: pointer;
+  margin: 5px 0;
 }

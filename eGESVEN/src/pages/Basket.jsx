@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Header from "../components/Header";
 import BasketC from "../components/Basket";
-
 import calafateImage from '../assets/calafate.jpg';
 import jackImage from '../assets/jack-daniels.jpg'
 import johnieImage from '../assets/Jw.jpg'
@@ -50,7 +49,7 @@ function Basket() {
     <>
       <Header />
       <main>
-        <h1>My Basket</h1>
+        <h1 className="basketTittle">Mi Carrito</h1>
         <BasketC basketItems={basketItems} onRemoveItem={handleRemoveItem} />
       </main>
     </>

@@ -4,9 +4,9 @@ import BasketCSS from "./Basket.module.css";
 function BasketC({ basketItems, onRemoveItem }) {
   return (
     <div className={BasketCSS.container}>
-      <h2 className={BasketCSS.title}>Shopping Basket</h2>
+      <h2 className={BasketCSS.title}></h2>
       {basketItems.length === 0 ? (
-        <p className={BasketCSS.empty}>Your basket is empty</p>
+        <p className={BasketCSS.empty}>Tu carrito esta vacio</p>
       ) : (
         <ul className={BasketCSS.items}>
           {basketItems.map((item) => (

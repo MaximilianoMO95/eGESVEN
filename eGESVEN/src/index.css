@@ -30,7 +30,11 @@ body {
   display: flex;
 }
   
-  
+.basketTittle {
+  text-align: center;
+  margin: 20px 0;
+  color: hwb(0 100% 0% / 0.9);
+}
 
 
 
