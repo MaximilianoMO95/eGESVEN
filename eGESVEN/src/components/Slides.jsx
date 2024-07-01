@@ -75,7 +75,7 @@ function Slides() {
             <img src={productImages[product.image_url]} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
             <div className={SlidesCSS.cardsBody}>
               <h3 className={SlidesCSS.cardsTitle}>{product.name}</h3>
-              <p className={SlidesCSS.cardsPrice}>{`$ ${product.price}`}</p>
+              <p className={SlidesCSS.cardsPrice}>{`$ ${product.price} CPL`}</p>
               <button className={SlidesCSS.cardsBtn}>Comprar</button>
             </div>
           </div>

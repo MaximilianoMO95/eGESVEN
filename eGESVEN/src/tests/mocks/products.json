@@ -5,7 +5,7 @@
       "code": "PROD001",
       "name": "Austral Calafate",
       "description": "Delicious craft beer made from Calafate berries.",
-      "price": 12.000,
+      "price": 12000,
       "stock": 50,
       "category_code": "BEER",
       "image_url": "calafate.jpg"
@@ -15,7 +15,7 @@
       "code": "PROD002",
       "name": "Jack Daniel's",
       "description": "Tennessee whiskey with a rich history.",
-      "price": 29.000,
+      "price": 29000,
       "stock": 25,
       "category_code": "WHISKEY",
       "image_url": "jack-daniels.jpg"
@@ -25,7 +25,7 @@
       "code": "PROD003",
       "name": "Johnnie Walker",
       "description": "Blended Scotch whisky with a smooth taste.",
-      "price": 35.000,
+      "price": 35000,
       "stock": 40,
       "category_code": "WHISKEY",
       "image_url": "jw.jpg"
@@ -35,7 +35,7 @@
       "code": "PROD004",
       "name": "Kunstmann",
       "description": "German-style craft beer from Chile.",
-      "price": 10.990,
+      "price": 10990,
       "stock": 60,
       "category_code": "BEER",
       "image_url": "kunst.jpg"
@@ -45,7 +45,7 @@
       "code": "PROD005",
       "name": "Vodka Eristoff",
       "description": "Premium Russian vodka.",
-      "price": 20.000,
+      "price": 20000,
       "stock": 30,
       "category_code": "VODKA",
       "image_url": "vodka.jpg"
