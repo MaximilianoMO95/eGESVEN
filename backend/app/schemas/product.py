@@ -22,6 +22,7 @@ class Category(CategoryBase):
 # Product Table
 class ProductBase(BaseModel):
     code: str
+    name: str
     description: str
     price: int
     stock: int
