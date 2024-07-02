@@ -1,10 +1,10 @@
 from sqlalchemy import Column
 from sqlalchemy.orm import Session
-from app.models.user import User, Role, Permission
 
 from typing import List, Set, cast
 
 from app.schemas.user import PermissionCreate, RoleCreate, UserCreate
+from app.models.user import User, Role, Permission
 
 
 class UserCrud:

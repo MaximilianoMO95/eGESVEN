@@ -46,7 +46,7 @@ class UserCreate(UserBase):
     password: str
 
 
-class User(UserBase):
+class UserPublic(UserBase):
     id: int
     is_active: bool
     role: Role
@@ -55,18 +55,17 @@ class User(UserBase):
 
 
 # Person Table
-class PersonBase(BaseModel):
+class ProfileBase(BaseModel):
     first_name: str
     last_name: str
-    address: str
     phone_number: Optional[str] = None
 
 
-class PersonCreate(PersonBase):
+class ProfileCreate(ProfileBase):
     pass
 
 
-class Person(PersonBase):
-    user: User
+class ProfilePublic(ProfileBase):
+    user: UserPublic
 
     model_config = ConfigDict(from_attributes=True)

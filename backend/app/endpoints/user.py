@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app.schemas.user import UserCreate, User
+from app.schemas.user import UserCreate, UserPublic
 from app.crud.user import UserCrud as crud_user
 from .deps import get_db
 
@@ -9,7 +9,7 @@ from .deps import get_db
 router = APIRouter()
 
 
-@router.post("/users/", response_model=User)
+@router.post("/users/", response_model=UserPublic)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = crud_user.get_user_by_email(db, email=user.email)
     if db_user:
@@ -18,7 +18,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     return crud_user.create_user(db=db, user=user)
 
 
-@router.get("/users/{user_id}", response_model=User)
+@router.get("/users/{user_id}", response_model=UserPublic)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud_user.get_user(db=db, user_id=user_id)
     if db_user is None:
@@ -27,6 +27,6 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
-@router.get("/users/", response_model=list[User])
+@router.get("/users/", response_model=list[UserPublic])
 def read_users(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     return crud_user.get_users(db=db, skip=skip, limit=limit)

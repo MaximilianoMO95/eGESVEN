@@ -2,7 +2,7 @@ from typing import cast
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.tests.utils.user import create_random_role, create_random_user, empty_user_records
+from app.tests.utils.user import create_random_user, empty_user_records
 
 
 def test_create_user(client: TestClient) -> None:
@@ -32,7 +32,5 @@ def test_get_users(client: TestClient, db: Session) -> None:
     data = response.json()
     assert len(data) > 1
 
-    print(data, "\n\n")
-    print(user_head.email, "\n\n", user_tail.email, "\n\n")
     assert any(u["email"] == cast(str, user_head.email) for u in data)
     assert any(u["email"] == cast(str, user_tail.email) for u in data)
