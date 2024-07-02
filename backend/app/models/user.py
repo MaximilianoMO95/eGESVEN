@@ -48,18 +48,27 @@ class User(Base):
 
     # Relationships
     role = relationship('Role', back_populates='users')
-    person = relationship('Person', back_populates='user', uselist=False)
+    profile = relationship('UserProfile', back_populates='user', uselist=False)
+    client = relationship('Client', back_populates='user', uselist=False)
 
 
-
-class Person(Base):
-    __tablename__ = "persons"
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
 
     user_id = Column(Integer, ForeignKey('users.id'), primary_key=True)
     first_name = Column(String(80), nullable=False)
     last_name = Column(String(80), nullable=False)
-    address = Column(String(160), nullable=False)
     phone_number = Column(String(18), nullable=True)
 
     # Relationships
-    user = relationship('User', back_populates='person', uselist=False)
+    user = relationship('User', back_populates='profile')
+
+
+class Client(Base):
+    __tablename__ = "clients"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey('users.id'), unique=True, nullable=False)
+
+    # Relationships
+    user = relationship('User', back_populates='client')
