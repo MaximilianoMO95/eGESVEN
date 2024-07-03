@@ -4,28 +4,28 @@ from sqlalchemy.orm import Session
 from typing import List, Set, cast
 
 from app.schemas.user import PermissionCreate, RoleCreate, UserCreate
-from app.models.user import User, Role, Permission
+from app.models.user import UserAccount, Role, Permission
 
 
 class UserCrud:
 
     @staticmethod
-    def get_user(db: Session, user_id: int) -> User|None:
-        return db.query(User).filter(User.id == user_id).first()
+    def get_user(db: Session, user_id: int) -> UserAccount|None:
+        return db.query(UserAccount).filter(UserAccount.id == user_id).first()
 
 
     @staticmethod
-    def get_user_by_email(db: Session, email: str) -> User|None:
-        return db.query(User).filter(User.email == email).first()
+    def get_user_by_email(db: Session, email: str) -> UserAccount|None:
+        return db.query(UserAccount).filter(UserAccount.email == email).first()
 
 
     @staticmethod
-    def get_users(db: Session, skip: int = 0, limit: int = 10) -> List[User]|None:
-        return db.query(User).offset(skip).limit(limit).all()
+    def get_users(db: Session, skip: int = 0, limit: int = 10) -> List[UserAccount]|None:
+        return db.query(UserAccount).offset(skip).limit(limit).all()
 
 
     @staticmethod
-    def create_user(db: Session, user: UserCreate) -> User:
+    def create_user(db: Session, user: UserCreate) -> UserAccount:
         # TODO: Implement password hashing (SHA256)
         fake_hashed_password = user.password + "notreallyhashed"
 
@@ -33,7 +33,7 @@ class UserCrud:
         if not role:
             role = RoleCrud.create_role(db, RoleCreate(name="client"));
 
-        db_user = User(email=user.email, hashed_password=fake_hashed_password, role_id=role.id)
+        db_user = UserAccount(email=user.email, hashed_password=fake_hashed_password, role_id=role.id)
 
         db.add(db_user)
         db.commit()
@@ -44,7 +44,7 @@ class UserCrud:
 
     @staticmethod
     def get_user_permissions(db: Session, user_id: int) -> Set[Permission]|None:
-        user = db.query(User).filter(User.id == user_id).first()
+        user = db.query(UserAccount).filter(UserAccount.id == user_id).first()
         if not user:
             return None
 
