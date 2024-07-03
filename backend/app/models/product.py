@@ -28,6 +28,7 @@ class Product(Base):
 
     # Relationships
     category = relationship("Category", back_populates="products")
+    basket_items = relationship("BasketItem", back_populates="product")
 
     __table_args__ = (
         CheckConstraint("price >= 0", name="check_price_positive"),
