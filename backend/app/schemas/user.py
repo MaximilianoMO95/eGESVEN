@@ -3,6 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic.config import ConfigDict
 
+
 # User Permissions
 class PermissionBase(BaseModel):
     name: str
@@ -49,14 +50,15 @@ class AccountCreate(AccountBase):
 
 class AccountPublic(AccountBase):
     id: int
+    user_id: int
     is_active: bool
-    role: Role
 
     model_config = ConfigDict(from_attributes=True)
 
 
 # User Profiles
 class ProfileBase(BaseModel):
+    user_id: int
     first_name: str
     last_name: str
     phone_number: Optional[str] = None
@@ -68,7 +70,22 @@ class ProfileCreate(ProfileBase):
 
 
 class ProfilePublic(ProfileBase):
-    account_id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# Users
+class UserBase(BaseModel):
+    pass
+
+
+class UserCreate(UserBase):
+    role_id: Optional[int] = None
+
+
+class UserPublic(UserBase):
+    id: int
+    role_id: int
 
     model_config = ConfigDict(from_attributes=True)
 
@@ -76,7 +93,7 @@ class ProfilePublic(ProfileBase):
 # Clients
 class ClientBase(BaseModel):
     id: int
-    account_id: int
+    user_id: int
 
 
 class ClientCreate(ClientBase):

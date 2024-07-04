@@ -8,36 +8,36 @@ import app.tests.utils as utils
 
 
 def test_create_user_account(db: Session) -> None:
-    user_create = AccountCreate(email="test@example.com", password="password123")
+    new_account = AccountCreate(email="test@example.com", password="password123")
 
-    user = user_crud.create_account(db, user_create)
-    assert user.id is not None
-    assert cast(str, user.email) == user_create.email
+    account = user_crud.create_account(db, new_account)
+    assert account.id is not None
+    assert cast(str, account.email) == new_account.email
 
 
 def test_get_account(db: Session) -> None:
-    target_user = utils.user.create_random_user_account(db)
+    target_account = utils.user.create_random_user_account(db)
 
-    user = user_crud.get_account_by_email(db, "fake@fake.cl")
-    assert user is None
+    account = user_crud.get_account_by_email(db, "fake@fake.cl")
+    assert account is None
 
-    user = user_crud.get_account_by_email(db, cast(str, target_user.email))
-    assert user is not None
+    account = user_crud.get_account_by_email(db, cast(str, target_account.email))
+    assert account is not None
 
 
 def test_get_user_accounts(db: Session) -> None:
-    user_head = utils.user.create_random_user_account(db)
+    account_head = utils.user.create_random_user_account(db)
     _ = utils.user.create_random_user_account(db)
     _ = utils.user.create_random_user_account(db)
     _ = utils.user.create_random_user_account(db)
-    user_tail = utils.user.create_random_user_account(db)
+    account_tail = utils.user.create_random_user_account(db)
 
-    users = user_crud.get_account_list(db)
-    assert users is not None
-    assert len(users) > 1
+    accounts = user_crud.get_account_list(db)
+    assert accounts is not None
+    assert len(accounts) > 1
 
-    assert any(cast(str, u.email) == cast(str, user_head.email) for u in users)
-    assert any(cast(str, u.email) == cast(str, user_tail.email) for u in users)
+    assert any(cast(str, u.email) == cast(str, account_head.email) for u in accounts)
+    assert any(cast(str, u.email) == cast(str, account_tail.email) for u in accounts)
 
 
 def test_create_role(db: Session) -> None:
@@ -70,7 +70,8 @@ def test_create_permission(db: Session) -> None:
 
 
 def test_user_permissions(db: Session) -> None:
-    user = utils.user.create_random_user_account(db)
+    account = utils.user.create_random_user_account(db)
+    user = user_crud.get_user(db, cast(int, account.user_id))
 
     permission_create = PermissionCreate(name="edit", description="Can edit resources")
     permission = permission_crud.create(db, permission_create)
@@ -86,7 +87,9 @@ def test_user_permissions(db: Session) -> None:
 
 
 def test_have_permission(db: Session) -> None:
-    user = utils.user.create_random_user_account(db)
+    account = utils.user.create_random_user_account(db)
+    user = user_crud.get_user(db, cast(int, account.user_id))
+    assert user is not None
 
     _ = permission_crud.create(
         db,

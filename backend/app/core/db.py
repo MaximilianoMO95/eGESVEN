@@ -6,6 +6,7 @@ import os
 
 load_dotenv()
 
+DEFAULT_ROLE_NAME = "client"
 SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
 if not SQLALCHEMY_DATABASE_URL:
     raise EnvironmentError(f"Required environment variable -> 'DATABASE_URL' is not set.")
@@ -29,5 +30,5 @@ def init_db(db: Session) -> None:
     view_permission = permission_crud.create(db, client_permission)
 
     # Create default roles
-    client_role = role_crud.create(db, RoleCreate(name="client"))
+    client_role = role_crud.create(db, RoleCreate(name=DEFAULT_ROLE_NAME))
     client_role.permissions.append(view_permission)
