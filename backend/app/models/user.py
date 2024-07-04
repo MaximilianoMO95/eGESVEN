@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Integer, String
+from sqlalchemy import Boolean, DateTime, Integer, String
 from sqlalchemy.schema import Column, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
@@ -31,12 +31,12 @@ class Role(Base):
     name = Column(String(60), unique=True, nullable=False)
 
     # Relationships
-    user_accounts = relationship("UserAccount", back_populates="role")
+    accounts = relationship("Account", back_populates="role")
     permissions = relationship("Permission", secondary=role_permissions, back_populates="roles")
 
 
-class UserAccount(Base):
-    __tablename__ = "user_accounts"
+class Account(Base):
+    __tablename__ = "accounts"
 
     id = Column(Integer, primary_key=True)
     email = Column(String(100), unique=True, index=True, nullable=False)
@@ -47,29 +47,30 @@ class UserAccount(Base):
     role_id = Column(Integer, ForeignKey("roles.id"), nullable=False)
 
     # Relationships
-    role = relationship("Role", back_populates="user_accounts")
-    profile = relationship("UserProfile", back_populates="user_account", uselist=False)
-    client = relationship("Client", back_populates="user_account", uselist=False)
+    role = relationship("Role", back_populates="accounts")
+    profile = relationship("Profile", back_populates="account", uselist=False)
+    client = relationship("Client", back_populates="account", uselist=False)
 
 
-class UserProfile(Base):
-    __tablename__ = "user_profiles"
+class Profile(Base):
+    __tablename__ = "profiles"
 
-    user_account_id = Column(Integer, ForeignKey("user_accounts.id"), primary_key=True)
+    account_id = Column(Integer, ForeignKey("accounts.id"), primary_key=True)
     first_name = Column(String(80), nullable=False)
     last_name = Column(String(80), nullable=False)
+    date_of_birth = Column(DateTime, nullable=False)
     phone_number = Column(String(18), nullable=True)
 
     # Relationships
-    user_account = relationship("UserAccount", back_populates="profile")
+    account = relationship("Account", back_populates="profile")
 
 
 class Client(Base):
     __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True)
-    user_account_id = Column(Integer, ForeignKey("user_accounts.id"), unique=True, nullable=False)
+    account_id = Column(Integer, ForeignKey("accounts.id"), unique=True, nullable=False)
 
     # Relationships
-    user_account = relationship("UserAccount", back_populates="client")
+    account = relationship("Account", back_populates="client")
     basket = relationship("Basket", back_populates="client")
