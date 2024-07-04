@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional, Set, cast
 
+from app.core.security import get_password_hash, verify_password
 from app.schemas.user import  ProfileCreate, RoleCreate, AccountCreate
 from app.schemas.user import  UserCreate
 from app.models.user import Account, Permission, Profile, User
@@ -44,15 +45,14 @@ def get_account_list(db: Session, skip: int = 0, limit: int = 10) -> List[Accoun
 
 
 def create_account(db: Session, account: AccountCreate, user: Optional[UserCreate] = None) -> Account:
-    # TODO: Implement password hashing (SHA256)
-    fake_hashed_password = account.password + "notreallyhashed"
+    hashed_password = get_password_hash(account.password)
 
     new_user = UserCreate()
     if user:
         new_user = user
 
     db_user =  _create_user(db, new_user)
-    db_account = Account(email=account.email, hashed_password=fake_hashed_password, user_id = db_user.id)
+    db_account = Account(email=account.email, hashed_password=hashed_password, user_id = db_user.id)
 
     db.add(db_account)
     db.commit()
@@ -98,3 +98,9 @@ def have_permission(db: Session, user_id: int, permission: str) -> bool:
         return False
 
     return True
+
+
+def authenticate(db: Session, email: str, password: str) -> User|None:
+    db_user = get_account_by_email(db, email)
+    if db_user and verify_password(password, cast(str, db_user.hashed_password)):
+        return db_user
