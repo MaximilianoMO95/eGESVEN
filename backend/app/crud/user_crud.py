@@ -1,13 +1,12 @@
 from sqlalchemy.orm import Session
-
 from typing import List, Optional, Set, cast
 
 from app.schemas.user import  ProfileCreate, RoleCreate, AccountCreate
 from app.schemas.user import  UserCreate
 from app.models.user import Account, Permission, Profile, User
 from app.core.db import DEFAULT_ROLE_NAME
-from . import role_crud
 
+from . import role_crud
 
 
 def _create_user(db: Session, user: UserCreate) -> User:

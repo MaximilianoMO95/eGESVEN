@@ -19,7 +19,7 @@ class Basket(Base):
 class BasketItem(Base):
     __tablename__ = "basket_items"
     id = Column(Integer, primary_key=True, index=True)
-    basket_id = Column(Integer, ForeignKey("baskets.client_id"))
+    basket_id = Column(Integer, ForeignKey("baskets.id"))
     product_id = Column(Integer, ForeignKey('products.id'), nullable=False)
     quantity = Column(Integer, default=1, nullable=False)
     price = Column(Integer, nullable=False)
