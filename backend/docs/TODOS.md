@@ -34,7 +34,7 @@
 <br>
 
 ## Security
+- [x] hashing passwords
 - [x] permissions (partial)
 - [x] roles (partial)
 - [ ] protect endpoints
-- [ ] hashing passwords
