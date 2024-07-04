@@ -22,13 +22,13 @@ def basket_item_data(db: Session) -> BasketItemCreate:
     return BasketItemCreate(product_id=cast(int,product.id), quantity=1, price=cast(int, product.price))
 
 
-def test_create_basket(db: Session, basket_data: BasketCreate):
+def test_create_basket(db: Session, basket_data: BasketCreate) -> None:
     basket = basket_crud.create(db, basket_data)
     assert basket is not None
     assert cast(int, basket.client_id) == cast(int, basket_data.client_id)
 
 
-def test_get_basket(db: Session, basket_data: BasketCreate):
+def test_get_basket(db: Session, basket_data: BasketCreate) -> None:
     created_basket = basket_crud.create(db, basket_data)
     assert created_basket is not None
 
@@ -37,7 +37,7 @@ def test_get_basket(db: Session, basket_data: BasketCreate):
     assert cast(int, fetched_basket.client_id) == cast(int, created_basket.client_id)
 
 
-def test_push_item(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate):
+def test_push_item(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate) -> None:
     basket = basket_crud.create(db, basket_data)
     assert basket is not None
 
@@ -46,7 +46,7 @@ def test_push_item(db: Session, basket_data: BasketCreate, basket_item_data: Bas
     assert cast(int, item.basket_id) == cast(int, basket.client_id)
 
 
-def test_pop_item(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate):
+def test_pop_item(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate) -> None:
     basket = basket_crud.create(db, basket_data)
     assert basket is not None
 
@@ -58,7 +58,7 @@ def test_pop_item(db: Session, basket_data: BasketCreate, basket_item_data: Bask
     assert cast(int, popped_item.id) == cast(int, item.id)
 
 
-def test_get_items(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate):
+def test_get_items(db: Session, basket_data: BasketCreate, basket_item_data: BasketItemCreate) -> None:
     basket = basket_crud.create(db, basket_data)
     assert basket is not None
 

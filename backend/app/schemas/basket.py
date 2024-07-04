@@ -14,7 +14,7 @@ class BasketItemCreate(BasketItemBase):
     pass
 
 
-class BasketItem(BasketItemBase):
+class BasketItemPublic(BasketItemBase):
     id: int
     basket_id: int
 
@@ -29,8 +29,8 @@ class BasketCreate(BasketBase):
     items: List[BasketItemCreate] = []
 
 
-class Basket(BasketBase):
+class BasketPublic(BasketBase):
     id: int
-    items: List[BasketItem] = []
+    items: List[BasketItemPublic] = []
 
     model_config = ConfigDict(from_attributes=True)
