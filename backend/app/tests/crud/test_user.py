@@ -26,6 +26,8 @@ def test_get_account(db: Session) -> None:
 
 
 def test_get_user_accounts(db: Session) -> None:
+    utils.user.empty_account_records(db)
+
     account_head = utils.user.create_random_user_account(db)
     _ = utils.user.create_random_user_account(db)
     _ = utils.user.create_random_user_account(db)

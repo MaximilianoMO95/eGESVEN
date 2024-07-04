@@ -22,7 +22,7 @@ class BasketItem(BasketItemBase):
 
 
 class BasketBase(BaseModel):
-    user_id: int
+    client_id: int
 
 
 class BasketCreate(BasketBase):
