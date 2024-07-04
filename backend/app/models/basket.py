@@ -8,7 +8,8 @@ from app.core.db import Base
 class Basket(Base):
     __tablename__ = "baskets"
 
-    client_id = Column(Integer, ForeignKey("clients.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, index=True)
+    client_id = Column(Integer, ForeignKey("clients.id"))
 
     # Relationships
     client = relationship("Client", back_populates="basket")

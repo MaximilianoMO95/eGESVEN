@@ -3,6 +3,8 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic.config import ConfigDict
 
+from app.schemas.basket import Basket
+
 
 # User Permissions
 class PermissionBase(BaseModel):
@@ -92,7 +94,6 @@ class UserPublic(UserBase):
 
 # Clients
 class ClientBase(BaseModel):
-    id: int
     user_id: int
 
 
@@ -101,5 +102,7 @@ class ClientCreate(ClientBase):
 
 
 class ClientPublic(ClientBase):
+    id: int
+    basket: Basket
 
     model_config = ConfigDict(from_attributes=True)

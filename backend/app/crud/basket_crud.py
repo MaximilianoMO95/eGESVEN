@@ -6,7 +6,7 @@ from app.schemas.basket import BasketCreate, BasketItemCreate
 
 
 def create(db: Session, basket: BasketCreate) -> Basket | None:
-    db_basket = Basket(user_id=basket.user_id)
+    db_basket = Basket(**basket.model_dump())
 
     db.add(db_basket)
     db.commit()
