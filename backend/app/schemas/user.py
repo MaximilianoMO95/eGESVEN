@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 from pydantic.config import ConfigDict
@@ -22,7 +23,7 @@ class Permission(PermissionBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# User Role Table
+# User Roles
 class RoleBase(BaseModel):
     name: str
 
@@ -37,16 +38,16 @@ class Role(RoleBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# User Table
-class UserBase(BaseModel):
+# User Accounts
+class AccountBase(BaseModel):
     email: str
 
 
-class UserCreate(UserBase):
+class AccountCreate(AccountBase):
     password: str
 
 
-class UserPublic(UserBase):
+class AccountPublic(AccountBase):
     id: int
     is_active: bool
     role: Role
@@ -54,11 +55,12 @@ class UserPublic(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
 
-# Person Table
+# User Profiles
 class ProfileBase(BaseModel):
     first_name: str
     last_name: str
     phone_number: Optional[str] = None
+    date_of_birth: datetime
 
 
 class ProfileCreate(ProfileBase):
@@ -66,6 +68,21 @@ class ProfileCreate(ProfileBase):
 
 
 class ProfilePublic(ProfileBase):
-    user: UserPublic
+    account_id: int
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# Clients
+class ClientBase(BaseModel):
+    id: int
+    account_id: int
+
+
+class ClientCreate(ClientBase):
+    pass
+
+
+class ClientPublic(ClientBase):
 
     model_config = ConfigDict(from_attributes=True)
