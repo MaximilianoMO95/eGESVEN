@@ -2,7 +2,7 @@ from typing import cast
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from app.tests.utils.user import create_random_user_account, empty_user_records
+from app.tests.utils.user import create_random_user_account, empty_account_records
 
 
 def test_create_user_account(client: TestClient) -> None:
@@ -20,7 +20,7 @@ def test_create_user_account(client: TestClient) -> None:
 
 
 def test_get_user_accounts(client: TestClient, db: Session) -> None:
-    empty_user_records(db)
+    empty_account_records(db)
     user_head = create_random_user_account(db)
     _ = create_random_user_account(db)
     _ = create_random_user_account(db)
