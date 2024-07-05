@@ -3,12 +3,28 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from app.tests.utils.user import create_random_user_account, empty_account_records
+from app.core import settings
+
+
+def test_signup(client: TestClient) -> None:
+    user_data = {
+        "email": "testuser@test.com",
+        "password": "testpassword1234567",
+    }
+
+    response = client.post("/signup/", json=user_data)
+    assert response.status_code == 200
+
+    data = response.json()
+    assert data["role"]["name"] == settings.DEFAULT_ROLE_NAME
+    assert data["account"]["email"] == user_data["email"]
+    assert not "password" in data
 
 
 def test_create_user_account(client: TestClient) -> None:
     user_data = {
-        "email": "testuser@test.com",
-        "password": "testpassword",
+        "email": "testuse2r@test.com",
+        "password": "testpassword1234567",
     }
 
     response = client.post("/accounts/", json=user_data)

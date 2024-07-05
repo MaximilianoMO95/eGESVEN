@@ -13,11 +13,11 @@ def create_random_role(db: Session) -> Role:
 
 
 def create_random_user_account(db: Session) -> Account:
-    email = f"{helpers.random_lower_str()}@test.com"
-    hashed_password = "fake_hash" + helpers.random_lower_str()
+    email = f"{helpers.random_lower_str(20)}@test.com"
+    password = "fake_password1232131"
 
 
-    account = AccountCreate(email=email, password=hashed_password)
+    account = AccountCreate(email=email, password=password)
     return user_crud.create_account(db, account)
 
 

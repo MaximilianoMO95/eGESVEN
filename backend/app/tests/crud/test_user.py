@@ -8,7 +8,7 @@ import app.tests.utils as utils
 
 
 def test_create_user_account(db: Session) -> None:
-    new_account = AccountCreate(email="test@example.com", password="password123")
+    new_account = AccountCreate(email="test@example.com", password="password12asdksad3")
 
     account = user_crud.create_account(db, new_account)
     assert account.id is not None
