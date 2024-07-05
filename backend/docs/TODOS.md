@@ -24,6 +24,7 @@
 - [x] categories
 - [x] roles
 - [x] permissions
+- [ ] login
 - [ ] profiles
 - [ ] clients
 - [ ] deliveries
@@ -35,6 +36,6 @@
 
 ## Security
 - [x] hashing passwords
-- [x] permissions (partial)
-- [x] roles (partial)
-- [ ] protect endpoints
+- [x] roles
+- [x] protected endpoints
+- [x] permissions
