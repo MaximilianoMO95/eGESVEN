@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Field
 from pydantic.config import ConfigDict
 
 from app.schemas.basket import BasketPublic
@@ -43,11 +43,11 @@ class Role(RoleBase):
 
 # User Accounts
 class AccountBase(BaseModel):
-    email: str
+    email: EmailStr = Field(max_length=255)
 
 
 class AccountCreate(AccountBase):
-    password: str
+    password: str = Field(min_length=16, max_length=40)
 
 
 class AccountPublic(AccountBase):
@@ -85,9 +85,14 @@ class UserCreate(UserBase):
     role_id: Optional[int] = None
 
 
+class UserRegister(AccountBase):
+    password: str = Field(min_length=16, max_length=40)
+
+
 class UserPublic(UserBase):
     id: int
-    role_id: int
+    role: Role
+    account: AccountPublic
 
     model_config = ConfigDict(from_attributes=True)
 

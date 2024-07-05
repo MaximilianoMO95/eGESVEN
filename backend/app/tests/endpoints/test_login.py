@@ -8,7 +8,7 @@ from app.schemas.user import AccountCreate
 
 def test_login_access_token(client: TestClient, db: Session):
     test_email = "test@example.com"
-    test_password = "password123"
+    test_password = "password1235678991"
 
     user_crud.create_account(db, AccountCreate(email=test_email, password=test_password))
     response = client.post(
