@@ -1,19 +1,14 @@
 from fastapi import FastAPI
 
+from app.endpoints.main import api_router
+from app.core import settings
 from app.core.db import engine
-from app.endpoints import account, basket, login, product, category, user
 from app import models
+
+
+models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
 
-app.include_router(account.router, prefix="/api/v1", tags=["account"])
-app.include_router(product.router, prefix="/api/v1", tags=["product"])
-app.include_router(category.router, prefix="/api/v1", tags=["category"])
-app.include_router(basket.router, prefix="/api/v1", tags=["basket"])
-app.include_router(login.router, prefix="/api/v1", tags=["login"])
-app.include_router(user.router, prefix="/api/v1", tags=["user"])
-
-
-# Create database tables
-models.Base.metadata.create_all(bind=engine)
+app.include_router(api_router, prefix=settings.API_VERSION)

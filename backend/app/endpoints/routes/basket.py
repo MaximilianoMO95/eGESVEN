@@ -4,8 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.schemas.basket import BasketCreate, BasketItemCreate, BasketItemPublic, BasketPublic
 from app.crud import basket_crud
-
-from .deps import get_db
+from app.endpoints.deps import get_db
 
 
 router = APIRouter()

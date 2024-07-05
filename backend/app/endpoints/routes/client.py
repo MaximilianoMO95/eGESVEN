@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import ClientPublic
 from app.crud import client_crud
 from backend.app.decorators.permission import permission_required
-from .deps import get_db
+from app.endpoints.deps import get_db
 
 
 router = APIRouter()

@@ -6,7 +6,7 @@ import os
 load_dotenv()
 
 
-API_VERSION = "api/v1"
+API_VERSION = "/api/v1"
 DEFAULT_ROLE_NAME = "client"
 ACCESS_TOKEN_EXPIRE_MINUTES = (60 * 24 * 8)
 
