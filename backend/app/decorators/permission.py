@@ -7,7 +7,7 @@ from app.endpoints.deps import get_db, CurrentUser
 from app.models.user import Permission, Role
 
 
-def required_permission(permission_name: str, description: str = ""):
+def permission_required(permission_name: str, description: str = ""):
     """
     A decorator that registers a permission in the database and checks if the current user has the required permission.
 
