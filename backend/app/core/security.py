@@ -1,9 +1,11 @@
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
-import os, jwt, secrets
+import jwt
 from dotenv import load_dotenv
 from passlib.context import CryptContext
+
+from app.core import settings
 
 
 load_dotenv()
@@ -13,15 +15,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 ALGORITHM = "HS256"
-SECRET_KEY = os.getenv("SECRET_KEY")
-if not SECRET_KEY:
-    SECRET_KEY = secrets.token_urlsafe(32)
 
 
 def create_access_token(subject: str | Any, expires_delta: timedelta) -> str:
     expire = datetime.now(UTC) + expires_delta
     to_encode = {"exp": expire, "sub": str(subject)}
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 

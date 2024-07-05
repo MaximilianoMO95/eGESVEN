@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 from pydantic import BaseModel
 from pydantic.config import ConfigDict
@@ -106,3 +106,19 @@ class ClientPublic(ClientBase):
     basket: BasketPublic
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# Token
+class TokenCreate(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+
+class TokenPayload(BaseModel):
+    sub: int | None = None
+
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: Optional[str] = None
+    expires_at: Optional[timedelta] = None
