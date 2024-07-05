@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.schemas.user import AccountCreate, UserPublic, UserRegister
 from app.crud import user_crud
-from .deps import get_db
+from app.endpoints.deps import get_db
 
 
 router = APIRouter()
