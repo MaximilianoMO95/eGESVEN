@@ -1,4 +1,5 @@
-import subprocess, argparse, sys, os
+import subprocess, argparse
+import multiprocessing, os, sys
 
 
 banner = r"""
@@ -14,6 +15,50 @@ banner = r"""
 
 env_file_path = "backend/app/.env"
 env_example_file_path = "backend/app/.env-example"
+back_port = 8000
+front_port = 5173
+
+
+def prompt_for_yes(question, default = 'y'):
+    """Prompt the user for a yes/no answer with a default response."""
+    default_response = 'y' if default.lower() == 'y' else 'n'
+    prompt = f" [{default_response.upper()}/{'n' if default_response == 'y' else 'y'}] "
+
+    while True:
+        response = input(f"[PROMP] {question}{prompt}").strip().lower()
+        if not response:
+            return default_response == 'y'
+        if response in ['y', 'n']:
+            return response == 'y'
+
+        print("[HELP] Please respond with 'y' or 'n'.")
+
+
+def check_command_installed(command):
+    """Check if a command is available on the system."""
+    try:
+        subprocess.run([command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        return True
+
+    except subprocess.CalledProcessError: return False
+    except FileNotFoundError: return False
+
+
+def install_npm_dependencies():
+    """Install npm dependencies if node_modules directory does not exist."""
+    node_modules_path = os.path.join("frontend", "node_modules")
+    if not os.path.isdir(node_modules_path):
+        print("[INFO] 'node_modules' directory not found")
+        if not prompt_for_yes("Do you want to run npm install?", default = 'y'):
+            sys.exit(1)
+
+        try:
+            subprocess.run(["npm", "install"], cwd="frontend", check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"[ERROR] npm install failed with error: {e}", file=sys.stderr)
+            sys.exit(1)
+        except KeyboardInterrupt:
+            sys.exit(0)
 
 
 def read_env_example():
@@ -50,20 +95,38 @@ def create_env_file():
     print(f"[DONE] {env_file_path} has been created successfully.")
 
 
-def start_backend():
+def start_backend(shut_output = False):
     try:
-        subprocess.run(["fastapi", "dev", "app/main.py"], cwd="backend", check=True)
+        print(f"[INFO] backend running on port:  [{back_port}]")
+        subprocess.run(
+            ["fastapi", "dev", "app/main.py", "--port", str(back_port)],
+            cwd="backend",
+            check=True,
+            stdout=subprocess.DEVNULL if shut_output else None,
+            stderr=subprocess.DEVNULL if shut_output else None
+        )
     except subprocess.CalledProcessError as e:
-        print(f"Subprocess exited with error: {e}", file=sys.stderr)
+        print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
     except KeyboardInterrupt:
         sys.exit(0)
 
 
-def start_frontend():
+def start_frontend(shut_output = False):
+    if not check_command_installed("npm"):
+        print("[PANIC] npm is not installed. Please install npm and try again.", file=sys.stderr)
+        sys.exit(1)
     try:
-        subprocess.run(["npm", "run", "dev"], cwd="frontend", check=True)
+        install_npm_dependencies()
+        print(f"[INFO] frontend running on port: [{front_port}]")
+        subprocess.run(
+            ["npm", "run", "dev", "--", "--port", str(front_port)],
+            cwd="frontend",
+            check=True,
+            stdout=subprocess.DEVNULL if shut_output else None,
+            stderr=subprocess.DEVNULL if shut_output else None
+        )
     except subprocess.CalledProcessError as e:
-        print(f"Subprocess exited with error: {e}", file=sys.stderr)
+        print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
     except KeyboardInterrupt:
         sys.exit(0)
 
@@ -86,6 +149,11 @@ def parse_args():
         action="store_true",
         help="Start just the development server."
     )
+
+    if len(sys.argv) == 1 and os.path.exists(env_file_path):
+        parser.print_help(sys.stderr)
+        sys.exit(1)
+
     return parser.parse_args()
 
 
@@ -98,8 +166,21 @@ def main():
             print(f"[INFO] {env_file_path} file not found. Creating one...")
         create_env_file()
     elif args.start_dev:
-        start_backend()
-        start_frontend()
+        backend_process = multiprocessing.Process(target=start_backend, args=(True,))
+        frontend_process = multiprocessing.Process(target=start_frontend, args=(True,))
+
+        try:
+            backend_process.start()
+            frontend_process.start()
+
+            backend_process.join()
+            frontend_process.join()
+        except KeyboardInterrupt:
+            print("[INFO] Shutting downs Processes...")
+            backend_process.terminate()
+            frontend_process.terminate()
+
+            print("[DONE] Processes have been stopped.")
     elif args.start_dev_server:
         start_backend()
 
