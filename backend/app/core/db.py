@@ -1,19 +1,16 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base, sessionmaker
-from dotenv import load_dotenv
-import os
 
+from app.core.settings import ENVIRONMENT, SQLALCHEMY_DATABASE_URL, DEFAULT_ROLE_NAME
 
-load_dotenv()
-
-DEFAULT_ROLE_NAME = "client"
-SQLALCHEMY_DATABASE_URL = os.getenv("DATABASE_URL")
-if not SQLALCHEMY_DATABASE_URL:
-    raise EnvironmentError(f"Required environment variable -> 'DATABASE_URL' is not set.")
 
 
 # Note: For SQLITE you have to aditionally pass "connect_args={"check_same_thread": False}"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
+if ENVIRONMENT == "local":
+    engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
+
+
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
