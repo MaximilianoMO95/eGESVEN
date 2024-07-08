@@ -17,7 +17,7 @@ env_file_path = "backend/app/.env"
 env_example_file_path = "backend/app/.env-example"
 back_port = 8000
 front_port = 5173
-windows = ["cmd.exe", "\c"] if (os.name == "nt") else []
+windows = ["cmd.exe", "/c"] if (os.name == "nt") else []
 
 
 def prompt_for_yes(question, default = 'y'):
