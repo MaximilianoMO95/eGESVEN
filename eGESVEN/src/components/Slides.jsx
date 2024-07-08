@@ -1,14 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SlidesCSS from './Slides.module.css';
 import calafateImage from '../assets/calafate.jpg';
-import jackImage from '../assets/jack-daniels.jpg'
-import johnieImage from '../assets/Jw.jpg'
-import kunstImage from '../assets/Kunst.jpg'
-import vodkaImage from '../assets/Vodka.jpg'
-import products from '../tests/mocks/products.json';
+import jackImage from '../assets/jack-daniels.jpg';
+import johnieImage from '../assets/Jw.jpg';
+import kunstImage from '../assets/Kunst.jpg';
+import vodkaImage from '../assets/Vodka.jpg';
 
 const productImages = {
   'calafate.jpg': calafateImage,
@@ -23,7 +22,7 @@ function Arrow(props) {
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black", }}
+      style={{ ...style, display: "block", background: "black" }}
       onClick={onClick}
     />
   );
@@ -31,13 +30,30 @@ function Arrow(props) {
 
 function Slides() {
   const [productData, setProductData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulating fetching data from a JSON file for now
-    setProductData(products.products);
+    // Fetch data from the API
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/api/v1/products/');
+        if (!response.ok) {
+          throw new Error('Failed to fetch products');
+        }
+        const data = await response.json();
+        setProductData(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
-  var settings = {
+  const settings = {
     dots: true,
     infinite: true,
     speed: 500,
@@ -67,12 +83,15 @@ function Slides() {
     ]
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className={SlidesCSS.container}>
       <Slider {...settings}>
         {productData.map((product) => (
           <div key={product.id} className={SlidesCSS.cards}>
-            <img src={productImages[product.image_url]} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
+            <img src={productImages[`${product.image_url}.jpg`] || ''} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
             <div className={SlidesCSS.cardsBody}>
               <h3 className={SlidesCSS.cardsTitle}>{product.name}</h3>
               <p className={SlidesCSS.cardsPrice}>{`$ ${product.price} CPL`}</p>
