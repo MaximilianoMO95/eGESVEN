@@ -1,0 +1,145 @@
+
+.container {
+  display: flex;
+  position: relative;
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px hsla(0, 0%, 0%, 0.5);
+  width: 300px;
+  height: 370px;
+  border: 2px solid hsla(0, 0%, 100%, 0.2);
+  border-radius: 30px;
+  padding-top: 5px;
+  align-items: center;
+  align-content: center;
+  overflow: hidden; 
+  transition: height .2s ease;
+}
+
+.container.active {
+  height: 450px;
+}
+
+.formBox {
+  width: 100%;
+  padding: 20px;
+}
+
+.formBox.login {
+  transition: transform .18s ease;
+  transform: translateX(0);
+}
+
+.container.active .formBox.login {
+  transition: none;
+  transform: translateX(-400px);
+}
+
+.formBox.register {
+  position: absolute;
+  transition: none;
+  transform: translateX(400px);
+}
+
+.container.active .formBox.register {
+  transition: transform .18s ease;
+  transform: translateX(0);
+}
+
+.close {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  width: 45px;
+  height: 45px;
+  background-color: hsla(0, 0%, 0%, 0.2);
+  color: hsla(0, 0%, 100%, 0.7);
+  font-size: 2.1em;
+  border: 2px solid hsla(0, 0%, 100%, 0.2);
+  border-bottom-left-radius: 20px;
+  cursor: pointer;
+  z-index: 2;
+  padding: 2px;
+}
+
+.close:hover {
+  color: hsla(0, 0%, 100%, 0.9);
+  background-color: hsla(0, 8%, 5%, 0.7);
+  border: 2px solid hsla(0, 8%, 5%, 0.7);
+}
+
+.formBox h2 {
+  color: hsla(0, 0%, 100%, 0.7);
+  text-align: center;
+  margin: 10px 10px 25px 10px;
+  font-size: 2em;
+  font-weight: 600;
+}
+
+.inputBox {
+  margin: 20px -10px 0 5px;
+  display: flex;
+}
+
+.inputBox input {
+  width: 100%;
+  height: 50px;
+  background-color: transparent;
+  border: 2px solid hsla(0, 0%, 100%, 0.2);
+  border-radius: 30px;
+  padding: 10px 20px;
+  color: hsla(0, 0%, 100%, 0.8);
+}
+
+.inputBox input::placeholder {
+  color: hsla(0, 0%, 100%, 0.7);
+}
+
+.inputBox input:focus {
+  outline: none;
+}
+
+.inputBox i {
+  color: hsla(0, 0%, 100%, 0.7);
+  position: relative;
+  right: 40px;
+  top: 15px;
+}
+
+.noAccount {
+  text-align: center;
+  color: hsla(0, 0%, 100%, 0.7);
+  font-size: 0.9em;
+  font-weight: 500;
+  padding-top: 25px;
+}
+
+.noAccount a {
+  color: hsla(0, 0%, 100%, 0.9);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.noAccount a:hover {
+  text-decoration: underline;
+}
+
+.btnLogin {
+  color: black;
+  background-color: hsla(0, 0%, 100%, 0.7);
+  font-size: 1em;
+  font-weight: 600;
+  height: 45px;
+  width: 70%;
+  border: 2px solid hsla(0, 0%, 100%, 0.2);
+  border-radius: 30px;
+  margin: 30px 0 0 40px;
+  cursor: pointer;
+}
+
+.btnLogin:hover {
+  background-color: hsla(0, 0%, 100%, 0.9);
+}
