@@ -52,6 +52,10 @@ source .venv/bin/activate  # On Windows use `.venv\Scripts\activate`
 ```
 pip install -r requirements.txt
 ```
+or
+```
+pip install fastapi PyJWT passlib sqlalchemy
+```
 
 4. Set up the environment variables:
     - First create a `.env` file
