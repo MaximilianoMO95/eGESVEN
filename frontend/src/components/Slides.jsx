@@ -91,7 +91,7 @@ function Slides() {
       <Slider {...settings}>
         {productData.map((product) => (
           <div key={product.id} className={SlidesCSS.cards}>
-            <img src={productImages[`${product.image_url}.jpg`] || ''} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
+            <img src={productImages["jack-daniels.jpg"]} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
             <div className={SlidesCSS.cardsBody}>
               <h3 className={SlidesCSS.cardsTitle}>{product.name}</h3>
               <p className={SlidesCSS.cardsPrice}>{`$ ${product.price} CPL`}</p>
