@@ -17,6 +17,7 @@ env_file_path = "backend/app/.env"
 env_example_file_path = "backend/app/.env-example"
 back_port = 8000
 front_port = 5173
+windows = ["cmd.exe", "\c"] if (os.name == "nt") else []
 
 
 def prompt_for_yes(question, default = 'y'):
@@ -37,7 +38,7 @@ def prompt_for_yes(question, default = 'y'):
 def check_command_installed(command):
     """Check if a command is available on the system."""
     try:
-        subprocess.run([command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        subprocess.run([*windows, command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         return True
 
     except subprocess.CalledProcessError: return False
@@ -53,7 +54,7 @@ def install_npm_dependencies():
             sys.exit(1)
 
         try:
-            subprocess.run(["npm", "install"], cwd="frontend", check=True)
+            subprocess.run([*windows, "npm", "install"], cwd="frontend", check=True)
         except subprocess.CalledProcessError as e:
             print(f"[ERROR] npm install failed with error: {e}", file=sys.stderr)
             sys.exit(1)
@@ -99,7 +100,7 @@ def start_backend(shut_output = False):
     try:
         print(f"[INFO] backend running on port:  [{back_port}]")
         subprocess.run(
-            ["fastapi", "dev", "app/main.py", "--port", str(back_port)],
+            [*windows, "fastapi", "dev", "app/main.py", "--port", str(back_port)],
             cwd="backend",
             check=True,
             stdout=subprocess.DEVNULL if shut_output else None,
@@ -119,7 +120,7 @@ def start_frontend(shut_output = False):
         install_npm_dependencies()
         print(f"[INFO] frontend running on port: [{front_port}]")
         subprocess.run(
-            ["npm", "run", "dev", "--", "--port", str(front_port)],
+            [*windows, "npm", "run", "dev", "--", "--port", str(front_port)],
             cwd="frontend",
             check=True,
             stdout=subprocess.DEVNULL if shut_output else None,
