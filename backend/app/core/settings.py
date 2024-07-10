@@ -14,7 +14,7 @@ API_VERSION = "/api/v1"
 DEFAULT_ROLE_NAME = "client"
 ACCESS_TOKEN_EXPIRE_MINUTES = (60 * 24 * 8)
 ENVIRONMENT: AllowedEnvironments = cast(AllowedEnvironments, os.getenv("ENVIRONMENT", "local"))
-SQLALCHEMY_DATABASE_URL: str = "sqlite:///local.db"
+SQLALCHEMY_DATABASE_URL: str = "sqlite:///backend/local.db"
 SECRET_KEY = secrets.token_urlsafe(32)
 
 
