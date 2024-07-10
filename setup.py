@@ -13,11 +13,18 @@ banner = r"""
 """
 
 
-env_file_path = "backend/app/.env"
-env_example_file_path = "backend/app/.env-example"
+env_file_path = os.path.join("backend", "app", ".env")
+env_example_file_path = os.path.join("backend", "app", ".env-example")
+venv_path = os.path.join("backend", ".venv")
+
+is_windows = (os.name == "nt")
+venv_bin_name = "Scripts" if is_windows else "bin"
+
+python_bin = "py" if is_windows else "python"
+windows_run = ["cmd.exe", "/c"] if is_windows else []
+
 back_port = 8000
 front_port = 5173
-windows = ["cmd.exe", "/c"] if (os.name == "nt") else []
 
 
 def prompt_for_yes(question, default = 'y'):
@@ -38,7 +45,7 @@ def prompt_for_yes(question, default = 'y'):
 def check_command_installed(command):
     """Check if a command is available on the system."""
     try:
-        subprocess.run([*windows, command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        subprocess.run([*windows_run, command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
         return True
 
     except subprocess.CalledProcessError: return False
@@ -47,19 +54,26 @@ def check_command_installed(command):
 
 def install_npm_dependencies():
     """Install npm dependencies if node_modules directory does not exist."""
+    if not check_command_installed("npm"):
+        print("[PANIC] npm is not installed. Please install npm and try again.", file=sys.stderr)
+        sys.exit(1)
+
+
     node_modules_path = os.path.join("frontend", "node_modules")
-    if not os.path.isdir(node_modules_path):
+    if os.path.isdir(node_modules_path): return
+
+
+    try:
         print("[INFO] 'node_modules' directory not found")
         if not prompt_for_yes("Do you want to run npm install?", default = 'y'):
             sys.exit(1)
 
-        try:
-            subprocess.run([*windows, "npm", "install"], cwd="frontend", check=True)
-        except subprocess.CalledProcessError as e:
-            print(f"[ERROR] npm install failed with error: {e}", file=sys.stderr)
-            sys.exit(1)
-        except KeyboardInterrupt:
-            sys.exit(0)
+        subprocess.run([*windows_run, "npm", "install"], cwd="frontend", check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] npm install failed with error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt:
+        sys.exit(0)
 
 
 def read_env_example():
@@ -96,15 +110,85 @@ def create_env_file():
     print(f"[DONE] {env_file_path} has been created successfully.")
 
 
-def start_backend(shut_output = False):
+def install_backend_deps():
+    check_pyvenv()
+    if not check_command_installed(os.path.join(venv_path, venv_bin_name, "pip")):
+        print("[PANIC] pip is not installed. Please install pip and try again.", file=sys.stderr)
+        sys.exit(1)
+
+
+    deps = ["dotenv", "pytest", "fastapi"]
+
+    installed = all(check_command_installed(os.path.join(venv_path, venv_bin_name, dep)) for dep in deps)
+    if installed: return
+
+
     try:
-        print(f"[INFO] backend running on port:  [{back_port}]")
+        print("[INFO] python dependencies not installed")
+        if not prompt_for_yes("Do you want to install them?", default = 'y'):
+            sys.exit(1)
+
+
+        print(f"[INFO] installing deps...")
+        requirements_path = os.path.join("backend", "requirements_windows.txt" if is_windows else "requirements.txt")
+        subprocess.run([os.path.join(venv_path, venv_bin_name, "pip"), "install", "-r", requirements_path], check=True)
+        print(f"[DONE] deps installed successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+
+def check_pyvenv():
+    if not check_command_installed(python_bin):
+        print("[PANIC] python is not installed. Please install python and try again.", file=sys.stderr)
+        sys.exit(1)
+
+    if os.path.exists(venv_path):
+        return
+
+    try:
+        print("[INFO] '.venv' directory not found")
+        if not prompt_for_yes("Do you want to create the python enviroment?", default = 'y'):
+            sys.exit(1)
+
+
+        print(f"[INFO] creating python enviroment...")
         subprocess.run(
-            [*windows, "fastapi", "dev", "app/main.py", "--port", str(back_port)],
+            [*windows_run, python_bin, "-m", "venv", ".venv"],
             cwd="backend",
             check=True,
-            stdout=subprocess.DEVNULL if shut_output else None,
-            stderr=subprocess.DEVNULL if shut_output else None
+        )
+        print(f"[DONE] python enviroment created successfully")
+    except subprocess.CalledProcessError as e:
+        print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+
+def pre_start_dev():
+    check_pyvenv()
+    install_backend_deps()
+    install_npm_dependencies()
+
+
+def start_backend(shut_output = False):
+    _ = shut_output
+
+    try:
+        print(f"[INFO] backend running on port:  [{back_port}]")
+
+        subprocess.run(
+            [
+                *windows_run,
+                os.path.join(venv_path, venv_bin_name, "fastapi"),
+                "dev",
+                os.path.join("backend", "app", "main.py"), "--port", str(back_port)
+            ],
+            check=True,
+            # failing in windows: for some reason if we redirect output it fail to start the process
+            stdout=subprocess.DEVNULL if (shut_output and not is_windows) else None,
+            stderr=subprocess.DEVNULL if (shut_output and not is_windows) else None
         )
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
@@ -120,7 +204,7 @@ def start_frontend(shut_output = False):
         install_npm_dependencies()
         print(f"[INFO] frontend running on port: [{front_port}]")
         subprocess.run(
-            [*windows, "npm", "run", "dev", "--", "--port", str(front_port)],
+            [*windows_run, "npm", "run", "dev", "--", "--port", str(front_port)],
             cwd="frontend",
             check=True,
             stdout=subprocess.DEVNULL if shut_output else None,
@@ -167,21 +251,22 @@ def main():
             print(f"[INFO] {env_file_path} file not found. Creating one...")
         create_env_file()
     elif args.start_dev:
-        backend_process = multiprocessing.Process(target=start_backend, args=(True,))
+        pre_start_dev()
         frontend_process = multiprocessing.Process(target=start_frontend, args=(True,))
+        backend_process = multiprocessing.Process(target=start_backend, args=(True,))
 
         try:
-            backend_process.start()
             frontend_process.start()
+            backend_process.start()
 
-            backend_process.join()
             frontend_process.join()
+            backend_process.join()
         except KeyboardInterrupt:
             print("[INFO] Shutting downs Processes...")
             backend_process.terminate()
             frontend_process.terminate()
-
             print("[DONE] Processes have been stopped.")
+
     elif args.start_dev_server:
         start_backend()
 
