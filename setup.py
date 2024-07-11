@@ -117,7 +117,7 @@ def install_backend_deps():
         sys.exit(1)
 
 
-    deps = ["dotenv", "pytest", "fastapi"]
+    deps = ["dotenv", "pytest", "fastapi", "uvicorn"]
 
     installed = all(check_command_installed(os.path.join(venv_path, venv_bin_name, dep)) for dep in deps)
     if installed: return
@@ -173,22 +173,17 @@ def pre_start_dev():
 
 
 def start_backend(shut_output = False):
-    _ = shut_output
-
     try:
         print(f"[INFO] backend running on port:  [{back_port}]")
 
         subprocess.run(
             [
-                *windows_run,
-                os.path.join(venv_path, venv_bin_name, "fastapi"),
-                "dev",
-                os.path.join("backend", "app", "main.py"), "--port", str(back_port)
+                *windows_run, os.path.join(venv_path, venv_bin_name, "uvicorn"),
+                "--app-dir", "backend",
+                "app.main:app", "--port", str(back_port)
             ],
             check=True,
-            # failing in windows: for some reason if we redirect output it fail to start the process
-            stdout=subprocess.DEVNULL if (shut_output and not is_windows) else None,
-            stderr=subprocess.DEVNULL if (shut_output and not is_windows) else None
+            capture_output=shut_output
         )
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
@@ -207,8 +202,7 @@ def start_frontend(shut_output = False):
             [*windows_run, "npm", "run", "dev", "--", "--port", str(front_port)],
             cwd="frontend",
             check=True,
-            stdout=subprocess.DEVNULL if shut_output else None,
-            stderr=subprocess.DEVNULL if shut_output else None
+            capture_output=shut_output
         )
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] Subprocess exited with error: {e}", file=sys.stderr)
