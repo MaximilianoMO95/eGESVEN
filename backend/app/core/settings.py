@@ -2,6 +2,7 @@ import secrets
 from typing import Literal, cast
 from dotenv import load_dotenv
 import os
+from os.path import abspath, dirname
 
 
 load_dotenv()
@@ -14,7 +15,7 @@ API_VERSION = "/api/v1"
 DEFAULT_ROLE_NAME = "client"
 ACCESS_TOKEN_EXPIRE_MINUTES = (60 * 24 * 8)
 ENVIRONMENT: AllowedEnvironments = cast(AllowedEnvironments, os.getenv("ENVIRONMENT", "local"))
-SQLALCHEMY_DATABASE_URL: str = "sqlite:///backend/local.db"
+SQLALCHEMY_DATABASE_URL: str = "sqlite:///" + os.path.join(dirname(abspath(__file__)), "..", "..", "local.db")
 SECRET_KEY = secrets.token_urlsafe(32)
 
 
