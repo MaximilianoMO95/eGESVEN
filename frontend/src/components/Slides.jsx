@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from "react";
 import Slider from "react-slick";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SlidesCSS from './Slides.module.css';
-import calafateImage from '../assets/calafate.jpg';
-import jackImage from '../assets/jack-daniels.jpg';
-import johnieImage from '../assets/Jw.jpg';
-import kunstImage from '../assets/Kunst.jpg';
-import vodkaImage from '../assets/Vodka.jpg';
 
-const productImages = {
-  'calafate.jpg': calafateImage,
-  'jack-daniels.jpg': jackImage,
-  'jw.jpg': johnieImage,
-  'kunst.jpg': kunstImage,
-  'vodka.jpg': vodkaImage,
-};
+import ImageSample from '../assets/jack-daniels.jpg';
+
 
 function Arrow(props) {
   const { className, style, onClick } = props;
   return (
     <div
       className={className}
-      style={{ ...style, display: "block", background: "black" }}
+      style={{ ...style, background: "black" }}
       onClick={onClick}
     />
   );
 }
 
 function Slides() {
+   const CPL = Intl.NumberFormat('es-CL', {
+    style: 'currency',
+    currency: 'CPL',
+  });
+
   const [productData, setProductData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -57,8 +53,8 @@ function Slides() {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 2,
+    slidesToShow: 4,
+    slidesToScroll: 3,
     nextArrow: <Arrow />,
     prevArrow: <Arrow />,
     initialSlide: 0,
@@ -87,20 +83,24 @@ function Slides() {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className={SlidesCSS.container}>
-      <Slider {...settings}>
-        {productData.map((product) => (
-          <div key={product.id} className={SlidesCSS.cards}>
-            <img src={productImages["jack-daniels.jpg"]} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
-            <div className={SlidesCSS.cardsBody}>
-              <h3 className={SlidesCSS.cardsTitle}>{product.name}</h3>
-              <p className={SlidesCSS.cardsPrice}>{`$ ${product.price} CPL`}</p>
+    <main className={SlidesCSS.container}>
+      <div>
+        <Slider {...settings}>
+          {productData.map((product) => (
+            <div key={product.id} className={SlidesCSS.cards}>
+              <img src={ImageSample} alt={`Imagen ${product.name}`} className={SlidesCSS.cardsImg} />
+
+              <div className={SlidesCSS.cardsBody}>
+                <h3 className={SlidesCSS.cardsTitle}>{product.name}</h3>
+                <p className={SlidesCSS.cardsPrice}>{CPL.format(product.price)}</p>
+              </div>
+
               <button className={SlidesCSS.cardsBtn}>Comprar</button>
             </div>
-          </div>
-        ))}
-      </Slider>
-    </div>
+          ))}
+        </Slider>
+      </div>
+    </main>
   );
 }
 

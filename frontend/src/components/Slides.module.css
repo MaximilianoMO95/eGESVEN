@@ -1,61 +1,72 @@
 .container {
-
-  justify-content: center;
+  display: flex;
+  justify-items: center;
   align-items: center;
-  width: 50%;
-  margin: 30px auto;
-  padding: 40px;
+  padding: 0 5vw;
 
+  width: 100vw;
+  min-height: 95vh;
+
+  &>div {
+    display: block;
+
+    width: 100%;
+    height: auto;
+  }
 }
 
 .cards {
-  margin-top: 100px;
-  border: 2px solid black;
-  padding: 10px;
+  display: flex !important;
+  gap: 2em;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
   background-color: rgba(0, 0, 0, 0.493);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  border-radius: 10px;
-  text-align: center;
-  aspect-ratio: 1 / 1.5;
+  border: 0.2em solid black;
+  border-radius: 0.8em;
 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding-bottom: 1.2em;
 }
 
 .cardsImg {
+  border-radius: inherit;
+  aspect-ratio: 1 / 1;
+
   width: 100%;
-  height: 200px;
-  border-radius: 10px;
+  max-height: 350px;
 }
 
 .cardsBody {
-  padding: 10px;
-
+  padding: 0 1em;
 }
 
 .cardsTitle {
   font-size: 1.5em;
+  text-overflow: clip;
   margin: 10px 0;
   color: white;
 }
 
 .cardsPrice {
+  color: #FFFEFE;
   font-size: 1.2em;
-  color: #fffefe;
-  margin: 10px 0;
 }
 
 .cardsBtn {
-  padding: 10px 20px;
+  display: flex;
   background-color: hsla(0, 0%, 100%, 0.8);
-  color: #000000;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  border-radius: 0.45em;
+  color: #000000;
   font-weight: bold;
   font-size: 1.1em;
+  cursor: pointer;
+  padding: 0.8em 2em;
+
+  transition: background-color 0.3s;
 }
 
 .cardsBtn:hover {
   background-color: #ffffff;
 }
-
